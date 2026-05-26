@@ -6,11 +6,132 @@
   },
   "universities": [
     {
+      "id": "amoud-university",
+      "name": "Amoud University",
+      "city": "Borama",
+      "status": "public",
+      "description": "Established university in Borama known for health sciences and teacher education.",
+      "rector": "",
+      "departments": [
+        "Agriculture",
+        "Education",
+        "Medicine"
+      ],
+      "tuition": "",
+      "scholarships": {
+        "available": false,
+        "details": ""
+      },
+      "admission_requirements": "",
+      "website": "https://amouduniversity.org",
+      "contact": {
+        "email": "",
+        "phone": ""
+      },
+      "location": {
+        "address": "",
+        "map": ""
+      },
+      "social_links": {},
+      "logo": ""
+    },
+    {
+      "id": "benadir-university",
+      "name": "Benadir University",
+      "city": "Mogadishu",
+      "status": "private",
+      "description": "Private university in Mogadishu offering multidisciplinary undergraduate programs.",
+      "rector": "",
+      "departments": [
+        "Business Administration",
+        "Engineering",
+        "Medicine"
+      ],
+      "tuition": "",
+      "scholarships": {
+        "available": false,
+        "details": ""
+      },
+      "admission_requirements": "",
+      "website": "https://benadiruniversity.so",
+      "contact": {
+        "email": "",
+        "phone": ""
+      },
+      "location": {
+        "address": "",
+        "map": ""
+      },
+      "social_links": {},
+      "logo": ""
+    },
+    {
+      "id": "mogadishu-university",
+      "name": "Mogadishu University",
+      "city": "Mogadishu",
+      "status": "private",
+      "description": "Private university in Mogadishu with broad faculties in technology, law, and business.",
+      "rector": "",
+      "departments": [
+        "Business Administration",
+        "Computer Science",
+        "Law"
+      ],
+      "tuition": "",
+      "scholarships": {
+        "available": false,
+        "details": ""
+      },
+      "admission_requirements": "",
+      "website": "https://mu.edu.so",
+      "contact": {
+        "email": "",
+        "phone": ""
+      },
+      "location": {
+        "address": "",
+        "map": ""
+      },
+      "social_links": {},
+      "logo": ""
+    },
+    {
+      "id": "puntland-state-university",
+      "name": "Puntland State University",
+      "city": "Galkayo",
+      "status": "public",
+      "description": "Public university serving Puntland with applied sciences and social sciences programs.",
+      "rector": "",
+      "departments": [
+        "Economics",
+        "Education",
+        "Engineering"
+      ],
+      "tuition": "",
+      "scholarships": {
+        "available": false,
+        "details": ""
+      },
+      "admission_requirements": "",
+      "website": "https://psu.edu.so",
+      "contact": {
+        "email": "",
+        "phone": ""
+      },
+      "location": {
+        "address": "",
+        "map": ""
+      },
+      "social_links": {},
+      "logo": ""
+    },
+    {
       "id": "simad-university",
       "name": "SIMAD University",
       "city": "Mogadishu",
       "status": "private",
       "description": "Private university known for business, technology, and health sciences programs with modern facilities.",
+      "rector": "",
       "departments": [
         "Business Administration",
         "Engineering",
@@ -46,6 +167,7 @@
       "city": "Mogadishu",
       "status": "public",
       "description": "Somalia's flagship public university offering broad academic programs for undergraduate and postgraduate students.",
+      "rector": "",
       "departments": [
         "Agriculture",
         "Education",
@@ -81,6 +203,7 @@
       "city": "Hargeisa",
       "status": "public",
       "description": "Public university serving Somaliland with programs in health, engineering, and education.",
+      "rector": "",
       "departments": [
         "Economics",
         "Education",
@@ -116,6 +239,7 @@
       "city": "Mogadishu",
       "status": "private",
       "description": "Comprehensive university with flexible programs in business, education, and applied sciences.",
+      "rector": "",
       "departments": [
         "Business",
         "Education",

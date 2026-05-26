@@ -1,4 +1,10 @@
 {
-  "notes": "Add JSON endpoints that return university data. See README for schema expectations.",
-  "sources": []
+  "notes": "Sources can be JSON or HTML lists. Keep failures non-blocking; scraper has fallback discovery.",
+  "sources": [
+    {
+      "name": "Wikipedia list of universities in Somalia",
+      "type": "wikipedia_html",
+      "url": "https://en.wikipedia.org/wiki/List_of_universities_in_Somalia"
+    }
+  ]
 }

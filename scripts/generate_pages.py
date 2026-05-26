@@ -63,6 +63,7 @@ def render_university_page(university: Dict[str, Any]) -> str:
     status = "Public" if status_raw == "public" else "Private"
     description = clean_text(university.get("description"))
     tuition = clean_text(university.get("tuition"))
+    rector = clean_text(university.get("rector"))
     admission = clean_text(university.get("admission_requirements"))
     website = str(university.get("website") or "").strip()
     logo = to_detail_relative_path(str(university.get("logo") or "").strip())
@@ -190,6 +191,7 @@ def render_university_page(university: Dict[str, Any]) -> str:
           <h2>Overview</h2>
           <p>{description}</p>
           <p class="muted"><strong>Status:</strong> {escape(status)}</p>
+          <p class="muted"><strong>Rector:</strong> {rector}</p>
           <p class="muted"><strong>Tuition:</strong> {tuition}</p>
           <p class="muted"><strong>Website:</strong> {build_link(website, website or "Not listed")}</p>
         </section>

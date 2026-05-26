@@ -17,9 +17,13 @@ Somali-UniGuide/
 │   ├── universities.json
 │   └── sources.json
 ├── scripts/
-│   └── scraper.py
+│   ├── scraper.py
+│   └── generate_pages.py
 ├── .github/workflows/
-│   └── update.yml
+│   ├── update.yml
+│   └── update_data.yml
+├── universities/
+│   └── *.html
 ├── assets/
 │   ├── logos/
 │   └── images/
@@ -51,12 +55,13 @@ Somali-UniGuide/
 
 ## Automated Monthly Updates
 
-The GitHub Actions workflow in `.github/workflows/update.yml` runs monthly:
+The GitHub Actions workflow in `.github/workflows/update_data.yml` runs monthly:
 
 1. Executes `scripts/scraper.py`
-2. Updates `data/universities.json`
-3. Commits the changes back to the repository
-4. Triggers GitHub Pages redeploy from the default branch
+2. Executes `scripts/generate_pages.py`
+3. Updates `data/universities.json` and `universities/*.html`
+4. Commits the changes back to the repository only when files changed
+5. Triggers GitHub Pages redeploy from the default branch
 
 To add real data sources, update `data/sources.json` with JSON endpoints that return an array of universities or a `{ "universities": [...] }` payload using the same schema.
 

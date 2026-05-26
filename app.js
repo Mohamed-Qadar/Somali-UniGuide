@@ -103,6 +103,10 @@ let cityChartInstance = null;
 let deptChartInstance = null;
 
 const renderCharts = (universities) => {
+  if (typeof Chart === "undefined") {
+    console.warn("Chart.js is not loaded yet.");
+    return;
+  }
   const cityCtx = document.getElementById("cityChart")?.getContext("2d");
   const deptCtx = document.getElementById("departmentChart")?.getContext("2d");
   if (!cityCtx || !deptCtx) return;
@@ -359,6 +363,7 @@ const startIndexPage = async () => {
     renderList(data.universities || [], data.metadata || { last_updated: "" });
     attachFilterListeners(data.universities || [], data.metadata || {});
   } catch (error) {
+    console.error("Error starting index page:", error);
     if (selectors.summaryText) {
       selectors.summaryText.textContent = "Unable to load university data.";
     }
@@ -370,6 +375,7 @@ const startDetailPage = async () => {
     const data = await loadData();
     renderDetail(data.universities || []);
   } catch (error) {
+    console.error("Error starting detail page:", error);
     if (selectors.detailCard) {
       selectors.detailCard.textContent = "Unable to load university data.";
     }

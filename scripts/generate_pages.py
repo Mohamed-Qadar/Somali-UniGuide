@@ -33,6 +33,15 @@ def build_link(url: str, label: str) -> str:
     return f'<a href="{safe_url}" target="_blank" rel="noopener noreferrer">{safe_label}</a>'
 
 
+def to_detail_relative_path(path: str) -> str:
+    if not path:
+        return ""
+    path = path.strip()
+    if re.match(r"^(?:[a-z]+:|//)", path, re.IGNORECASE):
+        return path
+    return f"../{path.lstrip('./')}"
+
+
 def render_social_links(social_links: Dict[str, Any]) -> str:
     items = []
     for platform, url in sorted((social_links or {}).items()):
@@ -56,7 +65,7 @@ def render_university_page(university: Dict[str, Any]) -> str:
     tuition = clean_text(university.get("tuition"))
     admission = clean_text(university.get("admission_requirements"))
     website = str(university.get("website") or "").strip()
-    logo = str(university.get("logo") or "").strip()
+    logo = to_detail_relative_path(str(university.get("logo") or "").strip())
 
     contact = university.get("contact") or {}
     location = university.get("location") or {}

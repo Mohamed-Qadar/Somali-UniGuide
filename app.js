@@ -6,8 +6,6 @@ const selectors = {
   searchInput: document.getElementById("searchInput"),
   cityFilter: document.getElementById("cityFilter"),
   departmentFilter: document.getElementById("departmentFilter"),
-  scholarshipFilter: document.getElementById("scholarshipFilter"),
-  statusFilter: document.getElementById("statusFilter"),
   summaryText: document.getElementById("summaryText"),
   universityList: document.getElementById("universityList"),
   detailCard: document.getElementById("detailCard"),
@@ -17,8 +15,6 @@ const state = {
   search: "",
   city: "all",
   department: "all",
-  scholarship: "all",
-  status: "all",
 };
 
 const createOption = (value, label) => {
@@ -68,7 +64,6 @@ const matchesFilters = (uni) => {
   const searchTarget = [
     uni.name,
     uni.city,
-    uni.description,
     ...(uni.departments || []),
   ]
     .filter(Boolean)
@@ -81,21 +76,8 @@ const matchesFilters = (uni) => {
   const matchesDepartment =
     state.department === "all" ||
     (uni.departments || []).includes(state.department);
-  const matchesScholarship =
-    state.scholarship === "all" ||
-    (state.scholarship === "available"
-      ? uni.scholarships?.available
-      : !uni.scholarships?.available);
-  const matchesStatus =
-    state.status === "all" || uni.status === state.status;
 
-  return (
-    matchesSearch &&
-    matchesCity &&
-    matchesDepartment &&
-    matchesScholarship &&
-    matchesStatus
-  );
+  return matchesSearch && matchesCity && matchesDepartment;
 };
 
 const renderTags = (items) => {
@@ -109,6 +91,129 @@ const renderTags = (items) => {
   return list;
 };
 
+const slugifyName = (name) => {
+  return name
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+};
+
+let cityChartInstance = null;
+let deptChartInstance = null;
+
+const renderCharts = (universities) => {
+  const cityCtx = document.getElementById("cityChart")?.getContext("2d");
+  const deptCtx = document.getElementById("departmentChart")?.getContext("2d");
+  if (!cityCtx || !deptCtx) return;
+
+  // Aggregate Universities by City
+  const cityCounts = {};
+  universities.forEach((u) => {
+    if (u.city) {
+      cityCounts[u.city] = (cityCounts[u.city] || 0) + 1;
+    }
+  });
+
+  // Aggregate Universities by Department
+  const deptCounts = {};
+  universities.forEach((u) => {
+    (u.departments || []).forEach((dept) => {
+      deptCounts[dept] = (deptCounts[dept] || 0) + 1;
+    });
+  });
+
+  // Destroy old charts to prevent drawing glitches
+  if (cityChartInstance) cityChartInstance.destroy();
+  if (deptChartInstance) deptChartInstance.destroy();
+
+  const cities = Object.keys(cityCounts);
+  const cityValues = Object.values(cityCounts);
+
+  const depts = Object.keys(deptCounts);
+  const deptValues = Object.values(deptCounts);
+
+  if (cities.length === 0 && depts.length === 0) {
+    return;
+  }
+
+  // Create City Pie Chart
+  cityChartInstance = new Chart(cityCtx, {
+    type: "pie",
+    data: {
+      labels: cities,
+      datasets: [
+        {
+          data: cityValues,
+          backgroundColor: [
+            "#0f766e",
+            "#14b8a6",
+            "#f59e0b",
+            "#2563eb",
+            "#ef4444",
+            "#8b5cf6",
+            "#06b6d4",
+            "#10b981",
+            "#f43f5e",
+            "#ec4899",
+          ],
+          borderWidth: 1,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: "bottom",
+          labels: {
+            boxWidth: 12,
+            font: { size: 11 },
+          },
+        },
+      },
+    },
+  });
+
+  // Create Department Bar Chart
+  deptChartInstance = new Chart(deptCtx, {
+    type: "bar",
+    data: {
+      labels: depts,
+      datasets: [
+        {
+          label: "Universities",
+          data: deptValues,
+          backgroundColor: "#0f766e",
+          borderRadius: 4,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            stepSize: 1,
+            precision: 0,
+          },
+        },
+        x: {
+          ticks: {
+            font: { size: 9 },
+          },
+        },
+      },
+    },
+  });
+};
+
 const renderList = (universities, metadata) => {
   if (!selectors.universityList || !selectors.summaryText) {
     return;
@@ -119,6 +224,9 @@ const renderList = (universities, metadata) => {
   const filtered = universities.filter(matchesFilters);
   const lastUpdated = metadata?.last_updated || "unknown";
   selectors.summaryText.textContent = `${filtered.length} universities found · Last updated ${lastUpdated}`;
+
+  // Dynamically render charts based on current filter state
+  renderCharts(filtered);
 
   if (!filtered.length) {
     selectors.universityList.innerHTML =
@@ -133,27 +241,20 @@ const renderList = (universities, metadata) => {
     const title = document.createElement("h3");
     title.textContent = uni.name;
 
-    const badge = document.createElement("span");
-    badge.className = "badge";
-    badge.textContent = uni.status === "public" ? "Public" : "Private";
-
-    const description = document.createElement("p");
-    description.textContent = uni.description;
-
     const meta = document.createElement("div");
     meta.className = "card-meta";
     meta.innerHTML = `
-      <span>City: ${uni.city}</span>
-      <span>Scholarships: ${uni.scholarships?.available ? "Yes" : "No"}</span>
-      <span>Tuition: ${uni.tuition}</span>
+      <span><strong>City:</strong> ${uni.city}</span>
+      <span><strong>Rector:</strong> ${uni.rector || "Rector info not found"}</span>
     `;
 
     const link = document.createElement("a");
     link.className = "card-link";
-    link.href = `university.html?id=${encodeURIComponent(uni.id)}`;
+    const slug = slugifyName(uni.name);
+    link.href = `university.html?id=${encodeURIComponent(slug)}`;
     link.textContent = "View details →";
 
-    card.append(title, badge, description, renderTags(uni.departments || []), meta, link);
+    card.append(title, meta, renderTags(uni.departments || []), link);
     selectors.universityList.append(card);
   });
 };
@@ -179,20 +280,6 @@ const attachFilterListeners = (universities, metadata) => {
       renderList(universities, metadata);
     });
   }
-
-  if (selectors.scholarshipFilter) {
-    selectors.scholarshipFilter.addEventListener("change", (event) => {
-      state.scholarship = event.target.value;
-      renderList(universities, metadata);
-    });
-  }
-
-  if (selectors.statusFilter) {
-    selectors.statusFilter.addEventListener("change", (event) => {
-      state.status = event.target.value;
-      renderList(universities, metadata);
-    });
-  }
 };
 
 const renderDetail = (universities) => {
@@ -202,7 +289,7 @@ const renderDetail = (universities) => {
 
   const params = new URLSearchParams(window.location.search);
   const id = params.get("id");
-  const university = universities.find((uni) => uni.id === id);
+  const university = universities.find((uni) => slugifyName(uni.name) === id);
 
   if (!university) {
     selectors.detailCard.innerHTML =
@@ -215,23 +302,14 @@ const renderDetail = (universities) => {
   const header = document.createElement("div");
   header.className = "detail-grid";
 
-  const logo = document.createElement("img");
-  logo.className = "detail-logo";
-  logo.src = university.logo;
-  logo.alt = `${university.name} logo`;
-
   const overview = document.createElement("div");
   const title = document.createElement("h2");
   title.textContent = university.name;
   const subtitle = document.createElement("p");
-  subtitle.textContent = `${university.city} · ${
-    university.status === "public" ? "Public" : "Private"
-  }`;
-  const description = document.createElement("p");
-  description.textContent = university.description;
+  subtitle.textContent = `City: ${university.city}`;
 
-  overview.append(title, subtitle, description);
-  header.append(logo, overview);
+  overview.append(title, subtitle);
+  header.append(overview);
 
   const details = document.createElement("div");
   const detailsTitle = document.createElement("h3");
@@ -256,24 +334,7 @@ const renderDetail = (universities) => {
     "Departments",
     createTextNode((university.departments || []).join(", ") || "Not listed")
   );
-  addInfoItem("Tuition", createTextNode(university.tuition));
   addInfoItem("Rector", createTextNode(university.rector));
-
-  const scholarshipText = university.scholarships?.available
-    ? "Available"
-    : "Not available";
-  const scholarshipDetails = university.scholarships?.details || "";
-  addInfoItem(
-    "Scholarships",
-    createTextNode(
-      scholarshipDetails ? `${scholarshipText} - ${scholarshipDetails}` : scholarshipText
-    )
-  );
-
-  addInfoItem(
-    "Admission requirements",
-    createTextNode(university.admission_requirements)
-  );
 
   const website = university.website || "";
   if (website) {
@@ -287,51 +348,8 @@ const renderDetail = (universities) => {
     addInfoItem("Website", createTextNode("Not listed"));
   }
 
-  const contactParts = [university.contact?.email, university.contact?.phone].filter(
-    Boolean
-  );
-  addInfoItem("Contact", createTextNode(contactParts.join(" · ")));
-
-  const locationText = university.location?.address || "Not listed";
-  if (university.location?.map) {
-    const locationLink = document.createElement("a");
-    locationLink.href = university.location.map;
-    locationLink.target = "_blank";
-    locationLink.rel = "noreferrer";
-    locationLink.textContent = locationText;
-    addInfoItem("Location", locationLink);
-  } else {
-    addInfoItem("Location", createTextNode(locationText));
-  }
-
   details.append(detailsTitle, infoList);
-
-  const social = document.createElement("div");
-  social.innerHTML = "<h3 class=\"section-title\">Social media</h3>";
-  const socialList = document.createElement("ul");
-  socialList.className = "info-list";
-
-  const socialLinks = university.social_links || {};
-  Object.entries(socialLinks).forEach(([label, url]) => {
-    if (!url) return;
-    const item = document.createElement("li");
-    const link = document.createElement("a");
-    link.href = url;
-    link.target = "_blank";
-    link.rel = "noreferrer";
-    link.textContent = label.toUpperCase();
-    item.append(link);
-    socialList.append(item);
-  });
-
-  if (!socialList.children.length) {
-    const item = document.createElement("li");
-    item.textContent = "No social links listed.";
-    socialList.append(item);
-  }
-
-  social.append(socialList);
-  selectors.detailCard.append(header, details, social);
+  selectors.detailCard.append(header, details);
 };
 
 const startIndexPage = async () => {

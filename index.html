@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Somali-UniGuide</title>
     <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   </head>
   <body data-page="index">
     <header class="site-header">
@@ -14,20 +16,23 @@
             <h1>Somali-UniGuide</h1>
             <p>Free university guidance for Somali students.</p>
           </div>
-          <a
-            class="developer-button"
-            href="https://github.com/Mohamed-Qadar"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Developer profile and CV"
-          >
-            <svg viewBox="0 0 16 16" aria-hidden="true">
-              <path
-                d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38l-.01-1.35c-2.24.49-2.71-1.08-2.71-1.08-.36-.93-.9-1.18-.9-1.18-.73-.5.06-.49.06-.49.81.06 1.24.84 1.24.84.72 1.24 1.88.89 2.33.68.07-.52.28-.9.5-1.11-1.79-.2-3.67-.9-3.67-3.98 0-.88.31-1.6.83-2.17-.08-.2-.36-1.01.08-2.11 0 0 .68-.22 2.2.83a7.6 7.6 0 0 1 4 0c1.53-1.05 2.2-.83 2.2-.83.44 1.1.16 1.91.08 2.11.52.57.83 1.29.83 2.17 0 3.09-1.88 3.77-3.67 3.97.29.25.54.74.54 1.5l-.01 2.22c0 .21.14.45.55.38A8 8 0 0 0 8 0Z"
-              />
-            </svg>
-            <span>Developer &amp; CV</span>
-          </a>
+          <div class="header-actions">
+            <button id="authBtn" class="developer-button join-community-btn">Join Community</button>
+            <a
+              class="developer-button"
+              href="https://github.com/Mohamed-Qadar"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Developer profile and CV"
+            >
+              <svg viewBox="0 0 16 16" aria-hidden="true">
+                <path
+                  d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38l-.01-1.35c-2.24.49-2.71-1.08-2.71-1.08-.36-.93-.9-1.18-.9-1.18-.73-.5.06-.49.06-.49.81.06 1.24.84 1.24.84.72 1.24 1.88.89 2.33.68.07-.52.28-.9.5-1.11-1.79-.2-3.67-.9-3.67-3.98 0-.88.31-1.6.83-2.17-.08-.2-.36-1.01.08-2.11 0 0 .68-.22 2.2.83a7.6 7.6 0 0 1 4 0c1.53-1.05 2.2-.83 2.2-.83.44 1.1.16 1.91.08 2.11.52.57.83 1.29.83 2.17 0 3.09-1.88 3.77-3.67 3.97.29.25.54.74.54 1.5l-.01 2.22c0 .21.14.45.55.38A8 8 0 0 0 8 0Z"
+                />
+              </svg>
+              <span>Developer &amp; CV</span>
+            </a>
+          </div>
         </div>
         <div class="search-panel">
           <label class="search-label" for="searchInput">Search universities</label>
@@ -46,33 +51,89 @@
               Department
               <select id="departmentFilter" aria-label="Filter by department"></select>
             </label>
-            <label>
-              Scholarships
-              <select id="scholarshipFilter" aria-label="Filter by scholarship availability">
-                <option value="all">All</option>
-                <option value="available">Available</option>
-                <option value="unavailable">Not available</option>
-              </select>
-            </label>
-            <label>
-              Status
-              <select id="statusFilter" aria-label="Filter by university status">
-                <option value="all">All</option>
-                <option value="public">Public</option>
-                <option value="private">Private</option>
-              </select>
-            </label>
+
           </div>
         </div>
       </div>
     </header>
 
     <main class="container">
-      <section class="summary">
+      <div class="tabs-nav">
+        <button id="directoryTabBtn" class="tab-btn active">University Directory</button>
+        <button id="feedTabBtn" class="tab-btn">Community Feed</button>
+      </div>
+
+      <section class="summary directory-only">
         <div id="summaryText">Loading universities...</div>
       </section>
-      <section>
+      <section class="directory-only">
         <div id="universityList" class="university-grid"></div>
+      </section>
+      <section class="dashboard-section directory-only">
+        <h2>University Statistics</h2>
+        <div class="charts-grid">
+          <div class="chart-card">
+            <h3>Universities by City</h3>
+            <div class="chart-canvas-wrapper">
+              <canvas id="cityChart"></canvas>
+            </div>
+          </div>
+          <div class="chart-card">
+            <h3>Departments Count</h3>
+            <div class="chart-canvas-wrapper">
+              <canvas id="departmentChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Community Feed Section (Hidden by default) -->
+      <section id="feedSection" class="feed-section hidden">
+        <div class="feed-layout">
+          <!-- Left Column: Post Creator & Stream -->
+          <div class="feed-main">
+            <!-- Post Creator (Authenticated Users Only) -->
+            <div id="postCreator" class="post-creator card hidden">
+              <h3>Share an update</h3>
+              <form id="postForm">
+                <textarea id="postText" placeholder="What's on your mind? Share text, PNG images, or PDF syllabus/documents..."></textarea>
+                <div class="post-actions">
+                  <label class="file-upload-label">
+                    📷 Image (PNG)
+                    <input type="file" id="postImage" accept="image/png" />
+                  </label>
+                  <label class="file-upload-label">
+                    📄 Document (PDF)
+                    <input type="file" id="postDoc" accept="application/pdf" />
+                  </label>
+                  <button type="submit" class="submit-post-btn">Post</button>
+                </div>
+                <div id="filePreview" class="file-preview"></div>
+              </form>
+            </div>
+            
+            <!-- Auth Warning for Guest Users -->
+            <div id="feedAuthWarning" class="feed-auth-warning card">
+              <p>Sign in to share updates, upload documents, like, and comment.</p>
+              <button onclick="document.getElementById('authBtn').click()" class="developer-button">Sign In / Register</button>
+            </div>
+
+            <!-- Feed Stream -->
+            <div id="feedStream" class="feed-stream">
+              <div class="loading-feed">Loading feed updates...</div>
+            </div>
+          </div>
+          
+          <!-- Right Column: Student Network Members -->
+          <div class="feed-sidebar">
+            <div class="card">
+              <h3>Community Directory</h3>
+              <div id="membersList" class="members-list">
+                <p class="muted">Sign in to view students and their contact info.</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
     </main>
 
@@ -82,6 +143,48 @@
       </div>
     </footer>
 
+    <!-- Authentication Modal Overlay -->
+    <div id="authModal" class="modal-overlay hidden">
+      <div class="modal-card">
+        <button id="closeAuthBtn" class="close-modal-btn">&times;</button>
+        <div class="modal-tabs">
+          <button id="loginTabBtn" class="modal-tab active">Login</button>
+          <button id="registerTabBtn" class="modal-tab">Register</button>
+        </div>
+        
+        <!-- Login Form -->
+        <form id="loginForm" class="auth-form">
+          <div class="form-group">
+            <label for="loginPhone">Phone Number</label>
+            <input type="tel" id="loginPhone" placeholder="+252..." required />
+          </div>
+          <div class="form-group">
+            <label for="loginPassword">Password</label>
+            <input type="password" id="loginPassword" required />
+          </div>
+          <button type="submit" class="auth-submit-btn">Login</button>
+        </form>
+
+        <!-- Register Form -->
+        <form id="registerForm" class="auth-form hidden">
+          <div class="form-group">
+            <label for="regUsername">Username</label>
+            <input type="text" id="regUsername" placeholder="e.g. ahmed_ali" required />
+          </div>
+          <div class="form-group">
+            <label for="regPhone">Phone Number</label>
+            <input type="tel" id="regPhone" placeholder="+252..." required />
+          </div>
+          <div class="form-group">
+            <label for="regPassword">Password</label>
+            <input type="password" id="regPassword" placeholder="Minimum 6 characters" required />
+          </div>
+          <button type="submit" class="auth-submit-btn">Register</button>
+        </form>
+      </div>
+    </div>
+
     <script src="app.js"></script>
+    <script src="social.js"></script>
   </body>
 </html>

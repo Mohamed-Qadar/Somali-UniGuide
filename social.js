@@ -1,15 +1,16 @@
 // Supabase Configuration Placeholders
 // Replace these with your actual Supabase Project API credentials!
+(() => {
 const SUPABASE_URL = "YOUR_SUPABASE_URL";
 const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
 
-let supabase = null;
+let supabaseClient = null;
 let isMockMode = true;
 
 // Initialize Supabase client if credentials are configured
 if (SUPABASE_URL !== "YOUR_SUPABASE_URL" && SUPABASE_ANON_KEY !== "YOUR_SUPABASE_ANON_KEY") {
   try {
-    supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     isMockMode = false;
     console.log("Supabase initialized successfully.");
   } catch (err) {
@@ -23,16 +24,35 @@ if (SUPABASE_URL !== "YOUR_SUPABASE_URL" && SUPABASE_ANON_KEY !== "YOUR_SUPABASE
 // -------------------------------------------------------------
 // STATE MANAGEMENT & DATA SIMULATOR FOR MOCK MODE
 // -------------------------------------------------------------
-const state = {
-  currentUser: JSON.parse(localStorage.getItem("uniguide_user")) || null,
-  posts: JSON.parse(localStorage.getItem("uniguide_posts")) || [
+// Safe state parsers to prevent SyntaxError if localStorage has invalid/undefined values
+let currentUser = null;
+try {
+  const storedUser = localStorage.getItem("uniguide_user");
+  if (storedUser && storedUser !== "undefined") {
+    currentUser = JSON.parse(storedUser);
+  }
+} catch (e) {
+  console.error("Error parsing stored user:", e);
+}
+
+let posts = null;
+try {
+  const storedPosts = localStorage.getItem("uniguide_posts");
+  if (storedPosts && storedPosts !== "undefined") {
+    posts = JSON.parse(storedPosts);
+  }
+} catch (e) {
+  console.error("Error parsing stored posts:", e);
+}
+if (!posts) {
+  posts = [
     {
       id: "mock-post-1",
       username: "abdirahman_ali",
       phone_number: "+252 61 5550101",
-      content_text: "Hey everyone! Does anyone have the medicine faculty syllabus for Benadir University? Pls share!",
-      media_url: null,
-      document_url: null,
+      content: "Hey everyone! Does anyone have the medicine faculty syllabus for Benadir University? Pls share!",
+      file_url: null,
+      file_type: null,
       created_at: new Date(Date.now() - 3600000 * 2).toISOString(),
       likes: ["mock-user-2"],
       comments: [
@@ -47,19 +67,37 @@ const state = {
       id: "mock-post-2",
       username: "halima_farah",
       phone_number: "+252 61 5550202",
-      content_text: "Check out this beautiful view of the SNU campus library!",
-      media_url: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=600&auto=format&fit=crop&q=60",
-      document_url: null,
+      content: "Check out this beautiful view of the SNU campus library!",
+      file_url: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=600&auto=format&fit=crop&q=60",
+      file_type: "image/png",
       created_at: new Date(Date.now() - 3600000 * 5).toISOString(),
       likes: [],
       comments: []
     }
-  ],
-  members: JSON.parse(localStorage.getItem("uniguide_members")) || [
+  ];
+}
+
+let members = null;
+try {
+  const storedMembers = localStorage.getItem("uniguide_members");
+  if (storedMembers && storedMembers !== "undefined") {
+    members = JSON.parse(storedMembers);
+  }
+} catch (e) {
+  console.error("Error parsing stored members:", e);
+}
+if (!members) {
+  members = [
     { username: "abdirahman_ali", phone_number: "+252 61 5550101" },
     { username: "halima_farah", phone_number: "+252 61 5550202" },
     { username: "mohamed_warsame", phone_number: "+252 61 5550303" }
-  ]
+  ];
+}
+
+const state = {
+  currentUser,
+  posts,
+  members
 };
 
 // Helper to save state in local storage
@@ -128,7 +166,7 @@ if (dom.directoryTabBtn && dom.feedTabBtn) {
 // -------------------------------------------------------------
 const updateAuthUI = () => {
   if (state.currentUser) {
-    dom.authBtn.textContent = `Logout (${state.currentUser.username})`;
+    dom.authBtn.textContent = "My Profile";
     dom.postCreator.classList.remove("hidden");
     dom.feedAuthWarning.classList.add("hidden");
   } else {
@@ -139,9 +177,13 @@ const updateAuthUI = () => {
 };
 
 if (dom.authBtn) {
-  dom.authBtn.addEventListener("click", () => {
+  dom.authBtn.addEventListener("click", async () => {
     if (state.currentUser) {
-      // Logout logic
+      const shouldLogout = window.confirm(
+        `Signed in as @${state.currentUser.username || "student"}.\n\nDo you want to sign out?`
+      );
+      if (!shouldLogout) return;
+
       if (isMockMode) {
         state.currentUser = null;
         localStorage.removeItem("uniguide_user");
@@ -149,12 +191,12 @@ if (dom.authBtn) {
         renderFeed();
         renderMembers();
       } else {
-        supabase.auth.signOut().then(() => {
-          state.currentUser = null;
-          updateAuthUI();
-          renderFeed();
-          renderMembers();
-        });
+        await supabaseClient.auth.signOut();
+        state.currentUser = null;
+        localStorage.removeItem("uniguide_user");
+        updateAuthUI();
+        renderFeed();
+        renderMembers();
       }
     } else {
       // Open modal
@@ -222,7 +264,7 @@ if (dom.registerForm) {
       renderMembers();
     } else {
       // Supabase Phone Signup flow
-      const { data, error } = await supabase.auth.signUp({
+      const { data, error } = await supabaseClient.auth.signUp({
         phone: phone,
         password: password,
         options: {
@@ -231,11 +273,13 @@ if (dom.registerForm) {
       });
       if (error) {
         alert("Registration failed: " + error.message);
+      } else if (!data.user) {
+        alert("Registration started. Please verify the phone number if your Supabase project requires SMS confirmation.");
       } else {
         // Insert public profile
-        const { error: profileError } = await supabase
+        const { error: profileError } = await supabaseClient
           .from("profiles")
-          .insert([{ id: data.user.id, username, phone_number: phone }]);
+          .upsert([{ id: data.user.id, username, phone_number: phone }], { onConflict: "id" });
           
         if (profileError) {
           alert("Error creating user profile: " + profileError.message);
@@ -277,7 +321,7 @@ if (dom.loginForm) {
       }
     } else {
       // Supabase Authentication query
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabaseClient.auth.signInWithPassword({
         phone: phone,
         password: password
       });
@@ -285,7 +329,7 @@ if (dom.loginForm) {
         alert("Login failed: " + error.message);
       } else {
         // Fetch profiles
-        const { data: profile, error: pError } = await supabase
+        const { data: profile, error: pError } = await supabaseClient
           .from("profiles")
           .select("*")
           .eq("id", data.user.id)
@@ -350,24 +394,31 @@ if (dom.postForm) {
       return;
     }
 
+    if (selectedImageFile && selectedDocFile) {
+      alert("Please attach one file per post: either a PNG image or a PDF document.");
+      return;
+    }
+
     if (isMockMode) {
       // Simulate file attachments URLs
-      let mediaUrl = null;
-      let docUrl = null;
+      let fileUrl = null;
+      let fileType = null;
       if (selectedImageFile) {
-        mediaUrl = URL.createObjectURL(selectedImageFile);
+        fileUrl = URL.createObjectURL(selectedImageFile);
+        fileType = selectedImageFile.type;
       }
       if (selectedDocFile) {
-        docUrl = URL.createObjectURL(selectedDocFile);
+        fileUrl = URL.createObjectURL(selectedDocFile);
+        fileType = selectedDocFile.type;
       }
 
       const newPost = {
         id: "mock-post-" + Date.now(),
         username: state.currentUser.username,
         phone_number: state.currentUser.phone_number,
-        content_text: content,
-        media_url: mediaUrl,
-        document_url: docUrl,
+        content,
+        file_url: fileUrl,
+        file_type: fileType,
         created_at: new Date().toISOString(),
         likes: [],
         comments: []
@@ -383,42 +434,44 @@ if (dom.postForm) {
       renderFeed();
     } else {
       // Real Supabase storage uploads and db insertions
-      let mediaUrl = null;
-      let docUrl = null;
+      let fileUrl = null;
+      let fileType = null;
 
       // Handle PNG upload
       if (selectedImageFile) {
         const fileExt = selectedImageFile.name.split('.').pop();
-        const filePath = `posts/${Date.now()}.${fileExt}`;
-        const { error: uploadError } = await supabase.storage
+        const filePath = `${state.currentUser.id}/posts/${Date.now()}.${fileExt}`;
+        const { error: uploadError } = await supabaseClient.storage
           .from('files')
           .upload(filePath, selectedImageFile);
         if (!uploadError) {
-          const { data } = supabase.storage.from('files').getPublicUrl(filePath);
-          mediaUrl = data.publicUrl;
+          const { data } = supabaseClient.storage.from('files').getPublicUrl(filePath);
+          fileUrl = data.publicUrl;
+          fileType = selectedImageFile.type;
         }
       }
 
       // Handle PDF upload
       if (selectedDocFile) {
         const fileExt = selectedDocFile.name.split('.').pop();
-        const filePath = `docs/${Date.now()}.${fileExt}`;
-        const { error: uploadError } = await supabase.storage
+        const filePath = `${state.currentUser.id}/docs/${Date.now()}.${fileExt}`;
+        const { error: uploadError } = await supabaseClient.storage
           .from('files')
           .upload(filePath, selectedDocFile);
         if (!uploadError) {
-          const { data } = supabase.storage.from('files').getPublicUrl(filePath);
-          docUrl = data.publicUrl;
+          const { data } = supabaseClient.storage.from('files').getPublicUrl(filePath);
+          fileUrl = data.publicUrl;
+          fileType = selectedDocFile.type;
         }
       }
 
-      const { error } = await supabase
+      const { error } = await supabaseClient
         .from("posts")
         .insert([{
           user_id: state.currentUser.id,
-          content_text: content,
-          media_url: mediaUrl,
-          document_url: docUrl
+          content,
+          file_url: fileUrl,
+          file_type: fileType
         }]);
 
       if (error) {
@@ -457,17 +510,17 @@ window.toggleLike = async (postId) => {
     renderFeed();
   } else {
     // Check if liked already
-    const { data: liked } = await supabase
+    const { data: liked } = await supabaseClient
       .from("likes")
       .select("*")
       .eq("post_id", postId)
       .eq("user_id", state.currentUser.id)
-      .single();
+      .maybeSingle();
 
     if (liked) {
-      await supabase.from("likes").delete().eq("post_id", postId).eq("user_id", state.currentUser.id);
+      await supabaseClient.from("likes").delete().eq("post_id", postId).eq("user_id", state.currentUser.id);
     } else {
-      await supabase.from("likes").insert([{ post_id: postId, user_id: state.currentUser.id }]);
+      await supabaseClient.from("likes").insert([{ post_id: postId, user_id: state.currentUser.id }]);
     }
     await loadCloudFeed();
   }
@@ -496,7 +549,7 @@ window.submitComment = async (e, postId) => {
     saveMockState();
     renderFeed();
   } else {
-    const { error } = await supabase
+    const { error } = await supabaseClient
       .from("comments")
       .insert([{
         post_id: postId,
@@ -544,24 +597,27 @@ const renderFeed = () => {
     // Text content
     const content = document.createElement("p");
     content.className = "feed-card-content";
-    content.textContent = post.content_text || "";
+    content.textContent = post.content || post.content_text || "";
 
     card.append(header, content);
 
+    const fileUrl = post.file_url || post.media_url || post.document_url;
+    const fileType = post.file_type || (post.media_url ? "image/png" : null);
+
     // Media (PNG image) attachment
-    if (post.media_url) {
+    if (fileUrl && fileType?.startsWith("image/")) {
       const img = document.createElement("img");
       img.className = "post-media-img";
-      img.src = post.media_url;
+      img.src = fileUrl;
       img.alt = "Post media";
       card.append(img);
     }
 
     // Document (PDF) attachment
-    if (post.document_url) {
+    if (fileUrl && !fileType?.startsWith("image/")) {
       const docLink = document.createElement("a");
       docLink.className = "post-doc-link";
-      docLink.href = post.document_url;
+      docLink.href = fileUrl;
       docLink.target = "_blank";
       docLink.innerHTML = `📄 View syllabus PDF document`;
       card.append(docLink);
@@ -587,7 +643,9 @@ const renderFeed = () => {
     (post.comments || []).forEach(c => {
       const item = document.createElement("div");
       item.className = "comment-item";
-      item.innerHTML = `<strong>@${c.username}</strong>: ${c.comment_text}`;
+      const author = document.createElement("strong");
+      author.textContent = `@${c.username}`;
+      item.append(author, `: ${c.comment_text}`);
       list.append(item);
     });
 
@@ -649,13 +707,13 @@ const loadCloudFeed = async () => {
   if (isMockMode) return;
   
   // Query posts with profiles
-  const { data: posts, error } = await supabase
+  const { data: posts, error } = await supabaseClient
     .from("posts")
     .select(`
       id,
-      content_text,
-      media_url,
-      document_url,
+      content,
+      file_url,
+      file_type,
       created_at,
       profiles (
         username,
@@ -672,8 +730,8 @@ const loadCloudFeed = async () => {
   // Fetch likes and comments for each post
   const enrichedPosts = [];
   for (const post of posts) {
-    const { data: likes } = await supabase.from("likes").select("user_id").eq("post_id", post.id);
-    const { data: comments } = await supabase
+    const { data: likes } = await supabaseClient.from("likes").select("user_id").eq("post_id", post.id);
+    const { data: comments } = await supabaseClient
       .from("comments")
       .select(`
         id,
@@ -684,13 +742,13 @@ const loadCloudFeed = async () => {
       `)
       .eq("post_id", post.id);
 
-    enrichedPosts.append({
+    enrichedPosts.push({
       id: post.id,
       username: post.profiles.username,
       phone_number: post.profiles.phone_number,
-      content_text: post.content_text,
-      media_url: post.media_url,
-      document_url: post.document_url,
+      content: post.content,
+      file_url: post.file_url,
+      file_type: post.file_type,
       created_at: post.created_at,
       likes: (likes || []).map(l => l.user_id),
       comments: (comments || []).map(c => ({
@@ -707,12 +765,66 @@ const loadCloudFeed = async () => {
 
 const loadCloudMembers = async () => {
   if (isMockMode) return;
-  const { data: members, error } = await supabase.from("profiles").select("username, phone_number");
+  const { data: members, error } = await supabaseClient.from("profiles").select("id, username, phone_number");
   if (!error) {
     state.members = members;
     renderMembers();
   }
 };
 
+const loadCurrentProfile = async (userId) => {
+  const { data: profile, error } = await supabaseClient
+    .from("profiles")
+    .select("id, username, phone_number")
+    .eq("id", userId)
+    .maybeSingle();
+
+  if (error) {
+    console.error("Error loading profile:", error);
+    return null;
+  }
+
+  return profile;
+};
+
+const initializeCommunity = async () => {
+  if (isMockMode) {
+    updateAuthUI();
+    renderFeed();
+    renderMembers();
+    return;
+  }
+
+  const { data: sessionData } = await supabaseClient.auth.getSession();
+  const user = sessionData.session?.user;
+  if (user) {
+    state.currentUser = await loadCurrentProfile(user.id);
+    if (state.currentUser) {
+      localStorage.setItem("uniguide_user", JSON.stringify(state.currentUser));
+    }
+  } else {
+    state.currentUser = null;
+    localStorage.removeItem("uniguide_user");
+  }
+
+  updateAuthUI();
+  await loadCloudFeed();
+  await loadCloudMembers();
+
+  supabaseClient.auth.onAuthStateChange(async (_event, session) => {
+    const authUser = session?.user;
+    state.currentUser = authUser ? await loadCurrentProfile(authUser.id) : null;
+    if (state.currentUser) {
+      localStorage.setItem("uniguide_user", JSON.stringify(state.currentUser));
+    } else {
+      localStorage.removeItem("uniguide_user");
+    }
+    updateAuthUI();
+    await loadCloudFeed();
+    await loadCloudMembers();
+  });
+};
+
 // Initial Call
-updateAuthUI();
+initializeCommunity();
+})();

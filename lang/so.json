@@ -1,0 +1,91 @@
+{
+  "header": {
+    "tagline": "Hagaha bilaashka ah ee jaamacadaha Soomaaliyeed"
+  },
+  "hero": {
+    "badge": "Bilaash & Furan",
+    "title": "Hel jaamacadda kugu habboon si dhakhso ah.",
+    "subtitle": "Raadi jaamacadaha Soomaaliyeed, isbarbar dhig waaxyaha, hel deeqaha waxbarasho—ku habboon xitaa internet gaabis ah.",
+    "cardTitle": "Maxaa Somali-UniGuide?",
+    "cardPoint1": "Raadin degdeg ah + shaandheyn",
+    "cardPoint2": "Muujinta deeqaha",
+    "cardPoint3": "Khariidad jaamacadeed",
+    "cardPoint4": "Dib u eegis arday & waqtiga codsiga"
+  },
+  "search": {
+    "placeholder": "Raadi jaamacado, waaxyo, ama magaalooyin",
+    "reset": "Nadiifi shaandheynta",
+    "resultsCount": "Muujinaya {count} jaamacadood"
+  },
+  "filters": {
+    "title": "Shaandheyn",
+    "toggle": "Shaandheyn",
+    "close": "Xir",
+    "city": "Magaalo",
+    "department": "Waax",
+    "type": "Dowlad / Gaar loo leeyahay",
+    "scholarship": "Deeq waxbarasho",
+    "scholarshipOnly": "Kaliya jaamacadaha deeq leh"
+  },
+  "labels": {
+    "public": "Dowlad",
+    "private": "Gaar loo leeyahay",
+    "scholarship": "Deeq"
+  },
+  "results": {
+    "title": "Jaamacado",
+    "subtitle": "Ka baadh jaamacadaha hoose.",
+    "empty": "Ma jiro jaamacad ku habboon shaandheynta."
+  },
+  "actions": {
+    "viewDetails": "Faahfaahin"
+  },
+  "detail": {
+    "overview": "Guudmar",
+    "departments": "Waaxyo",
+    "tuition": "Khidmad",
+    "scholarships": "Deeqo",
+    "admission": "Shuruudaha gelitaanka",
+    "contact": "Xiriir",
+    "website": "Booqo {name}"
+  },
+  "map": {
+    "title": "Khariidadda Jaamacadaha Soomaaliya",
+    "subtitle": "Taabo calaamad si aad u aragto faahfaahin."
+  },
+  "recommend": {
+    "title": "Talooyin Caqli leh",
+    "subtitle": "Isku dheelli tir danahaaga iyo jaamacadaha ku habboon.",
+    "interest": "Dano",
+    "scholarshipNeed": "Ma u baahan tahay deeq?",
+    "city": "Magaalo",
+    "any": "Mid kasta",
+    "yes": "Haa",
+    "no": "Maya",
+    "empty": "Ma jiro natiijo, doorashooyin kale tijaabi."
+  },
+  "reviews": {
+    "title": "Dib u eegisyada ardayda",
+    "subtitle": "Arag waxa ay ardaydu leeyihiin.",
+    "addTitle": "Ku dar dib u eegis",
+    "name": "Magacaaga",
+    "comment": "La wadaag khibradaada",
+    "rating": "Qiimeyn",
+    "submit": "Gudbi dib u eegis",
+    "localNote": "Dib u eegisyada waxaa lagu kaydiyaa qalabkaaga.",
+    "empty": "Dib u eegis ma jirto."
+  },
+  "deadlines": {
+    "title": "Waqtiga Gelitaanka",
+    "subtitle": "Raac taariikhaha furitaanka iyo kama dambaysta.",
+    "alertTitle": "Waqtiga dhow",
+    "daysLeft": "{days} maalmood ayaa haray",
+    "opens": "Furmaa {date}",
+    "deadline": "Kama dambays {date}"
+  },
+  "footer": {
+    "tagline": "Loogu talagalay ardayda Soomaaliyeed. Waxaa lagu martigeliyaa GitHub Pages.",
+    "backToTop": "Dib ugu laabo dusha sare",
+    "lastUpdated": "Xogta la cusboonaysiiyey: {date}"
+  }
+}

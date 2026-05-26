@@ -1,0 +1,91 @@
+{
+  "header": {
+    "tagline": "Your free Somali university discovery guide"
+  },
+  "hero": {
+    "badge": "Free & Open Source",
+    "title": "Find the right university, faster.",
+    "subtitle": "Search Somali universities, compare departments, and discover scholarships—optimized for students on any connection.",
+    "cardTitle": "Why Somali-UniGuide?",
+    "cardPoint1": "Live search + smart filters",
+    "cardPoint2": "Scholarship highlights",
+    "cardPoint3": "Map-based discovery",
+    "cardPoint4": "Student reviews & deadlines"
+  },
+  "search": {
+    "placeholder": "Search universities, departments, or cities",
+    "reset": "Reset filters",
+    "resultsCount": "Showing {count} universities"
+  },
+  "filters": {
+    "title": "Filters",
+    "toggle": "Filters",
+    "close": "Close",
+    "city": "City",
+    "department": "Department",
+    "type": "Public / Private",
+    "scholarship": "Scholarship",
+    "scholarshipOnly": "Show only universities with scholarships"
+  },
+  "labels": {
+    "public": "Public",
+    "private": "Private",
+    "scholarship": "Scholarship"
+  },
+  "results": {
+    "title": "Universities",
+    "subtitle": "Browse all universities below.",
+    "empty": "No universities match your filters."
+  },
+  "actions": {
+    "viewDetails": "View details"
+  },
+  "detail": {
+    "overview": "Overview",
+    "departments": "Departments",
+    "tuition": "Tuition",
+    "scholarships": "Scholarships",
+    "admission": "Admission requirements",
+    "contact": "Contact",
+    "website": "Visit {name}"
+  },
+  "map": {
+    "title": "Somalia University Map",
+    "subtitle": "Tap a marker to view university details."
+  },
+  "recommend": {
+    "title": "Smart Recommendations",
+    "subtitle": "Match your interests to the best-fit universities.",
+    "interest": "Interest",
+    "scholarshipNeed": "Need scholarship?",
+    "city": "City",
+    "any": "Any",
+    "yes": "Yes",
+    "no": "No",
+    "empty": "No matches yet. Try different options."
+  },
+  "reviews": {
+    "title": "Student Reviews",
+    "subtitle": "See what students are saying.",
+    "addTitle": "Add a review",
+    "name": "Your name",
+    "comment": "Share your experience",
+    "rating": "Rating",
+    "submit": "Submit review",
+    "localNote": "Reviews are saved locally in your browser.",
+    "empty": "No reviews yet."
+  },
+  "deadlines": {
+    "title": "Admission Deadlines",
+    "subtitle": "Track opening dates and upcoming deadlines.",
+    "alertTitle": "Upcoming deadlines",
+    "daysLeft": "{days} days left",
+    "opens": "Opens {date}",
+    "deadline": "Deadline {date}"
+  },
+  "footer": {
+    "tagline": "Built for Somali students. Hosted free on GitHub Pages.",
+    "backToTop": "Back to top",
+    "lastUpdated": "Data last updated: {date}"
+  }
+}

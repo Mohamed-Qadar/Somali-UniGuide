@@ -1,0 +1,146 @@
+[
+  {
+    "id": "uom",
+    "name": "University of Mogadishu",
+    "city": "Mogadishu",
+    "type": "Private",
+    "hasScholarship": true,
+    "description": "Leading Somali university known for technology, medicine, and business programs.",
+    "logo": "assets/university-logo.svg",
+    "departments": ["Computer Science", "Business", "Medicine", "Education"],
+    "tuition": "From $1,000 per year",
+    "scholarships": "Merit scholarships and fee waivers for top performers.",
+    "contact": {
+      "email": "info@uom.edu.so",
+      "phone": "+252 61 555 0100"
+    },
+    "website": "https://uom.edu.so",
+    "admissionRequirements": [
+      "High school certificate",
+      "National ID or passport",
+      "Completed application form"
+    ],
+    "coordinates": { "lat": 2.0469, "lng": 45.3182 },
+    "tags": ["IT", "Medicine", "Business", "Education"]
+  },
+  {
+    "id": "simad",
+    "name": "SIMAD University",
+    "city": "Mogadishu",
+    "type": "Private",
+    "hasScholarship": true,
+    "description": "Modern campus offering ICT, business, and engineering pathways.",
+    "logo": "assets/university-logo.svg",
+    "departments": ["Computer Science", "Engineering", "Business", "Law"],
+    "tuition": "From $1,200 per year",
+    "scholarships": "Need-based scholarships and STEM grants.",
+    "contact": {
+      "email": "admissions@simad.edu.so",
+      "phone": "+252 61 555 0120"
+    },
+    "website": "https://simad.edu.so",
+    "admissionRequirements": [
+      "High school certificate",
+      "Two recommendation letters",
+      "Entrance interview"
+    ],
+    "coordinates": { "lat": 2.0387, "lng": 45.3421 },
+    "tags": ["IT", "Engineering", "Business", "Law"]
+  },
+  {
+    "id": "uoh",
+    "name": "University of Hargeisa",
+    "city": "Hargeisa",
+    "type": "Public",
+    "hasScholarship": true,
+    "description": "Public university serving Somaliland with strong education and health sciences.",
+    "logo": "assets/university-logo.svg",
+    "departments": ["Education", "Medicine", "Agriculture", "Business"],
+    "tuition": "From $600 per year",
+    "scholarships": "Government-backed scholarships for priority programs.",
+    "contact": {
+      "email": "info@uoh.edu.so",
+      "phone": "+252 63 555 0200"
+    },
+    "website": "https://uoh.edu.so",
+    "admissionRequirements": [
+      "Secondary school transcript",
+      "Entrance exam",
+      "ID or passport"
+    ],
+    "coordinates": { "lat": 9.5609, "lng": 44.0647 },
+    "tags": ["Education", "Medicine", "Agriculture", "Business"]
+  },
+  {
+    "id": "psu",
+    "name": "Puntland State University",
+    "city": "Garowe",
+    "type": "Public",
+    "hasScholarship": true,
+    "description": "Regional public university with focus on engineering and public administration.",
+    "logo": "assets/university-logo.svg",
+    "departments": ["Engineering", "Business", "Education", "Law"],
+    "tuition": "From $500 per year",
+    "scholarships": "Regional scholarships for high-achieving students.",
+    "contact": {
+      "email": "contact@psu.edu.so",
+      "phone": "+252 90 555 0300"
+    },
+    "website": "https://psu.edu.so",
+    "admissionRequirements": [
+      "High school certificate",
+      "Admission test",
+      "Passport-size photos"
+    ],
+    "coordinates": { "lat": 8.4050, "lng": 48.4843 },
+    "tags": ["Engineering", "Business", "Education", "Law"]
+  },
+  {
+    "id": "ku",
+    "name": "Kismayo University",
+    "city": "Kismayo",
+    "type": "Public",
+    "hasScholarship": false,
+    "description": "Growing university supporting maritime, agriculture, and community development.",
+    "logo": "assets/university-logo.svg",
+    "departments": ["Agriculture", "Education", "Business", "Law"],
+    "tuition": "From $450 per year",
+    "scholarships": "Limited scholarships available for top students.",
+    "contact": {
+      "email": "info@kismayouniversity.edu.so",
+      "phone": "+252 55 555 0400"
+    },
+    "website": "https://kismayouniversity.edu.so",
+    "admissionRequirements": [
+      "High school certificate",
+      "Community recommendation",
+      "Application form"
+    ],
+    "coordinates": { "lat": -0.3580, "lng": 42.5454 },
+    "tags": ["Agriculture", "Education", "Business", "Law"]
+  },
+  {
+    "id": "biu",
+    "name": "Baidoa International University",
+    "city": "Baidoa",
+    "type": "Private",
+    "hasScholarship": true,
+    "description": "Private institution offering health sciences and social development programs.",
+    "logo": "assets/university-logo.svg",
+    "departments": ["Medicine", "Education", "Business", "Computer Science"],
+    "tuition": "From $700 per year",
+    "scholarships": "Women in STEM scholarships and community support grants.",
+    "contact": {
+      "email": "admissions@biu.edu.so",
+      "phone": "+252 65 555 0500"
+    },
+    "website": "https://biu.edu.so",
+    "admissionRequirements": [
+      "Secondary certificate",
+      "Entrance interview",
+      "Application fee receipt"
+    ],
+    "coordinates": { "lat": 3.1167, "lng": 43.65 },
+    "tags": ["Medicine", "Education", "Business", "IT"]
+  }
+]

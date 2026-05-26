@@ -1,0 +1,26 @@
+[
+  {
+    "id": "uom-2026-fall",
+    "university": "University of Mogadishu",
+    "universityId": "uom",
+    "program": "Fall Intake 2026",
+    "openingDate": "2026-05-10",
+    "deadline": "2026-06-15"
+  },
+  {
+    "id": "simad-2026-fall",
+    "university": "SIMAD University",
+    "universityId": "simad",
+    "program": "Fall Intake 2026",
+    "openingDate": "2026-05-01",
+    "deadline": "2026-06-20"
+  },
+  {
+    "id": "uoh-2026-fall",
+    "university": "University of Hargeisa",
+    "universityId": "uoh",
+    "program": "Fall Intake 2026",
+    "openingDate": "2026-06-01",
+    "deadline": "2026-07-10"
+  }
+]

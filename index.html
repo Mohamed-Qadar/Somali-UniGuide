@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Somali-UniGuide</title>
+    <meta name="description" content="Find Somali universities, departments, scholarships, and admission deadlines." />
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+  </head>
+  <body>
+    <div id="deadline-alert" class="deadline-alert hidden">
+      <div class="deadline-alert-content">
+        <span class="deadline-alert-title" data-i18n="deadlines.alertTitle">Upcoming deadlines</span>
+        <div id="deadline-alert-list" class="deadline-alert-list"></div>
+      </div>
+    </div>
+
+    <header class="site-header">
+      <div class="brand">
+        <div class="brand-mark">SU</div>
+        <div>
+          <h1 class="brand-title">Somali-UniGuide</h1>
+          <p class="brand-subtitle" data-i18n="header.tagline">Your free Somali university discovery guide</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button id="mobile-filter-toggle" class="ghost-btn mobile-only" data-i18n="filters.toggle">
+          Filters
+        </button>
+        <div class="language-switcher">
+          <button class="lang-btn" data-lang="so">Somali</button>
+          <button class="lang-btn" data-lang="en">English</button>
+          <button class="lang-btn" data-lang="ar">العربية</button>
+        </div>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="hero-content">
+        <span class="hero-badge" data-i18n="hero.badge">Free &amp; Open Source</span>
+        <h2 data-i18n="hero.title">Find the right university, faster.</h2>
+        <p data-i18n="hero.subtitle">
+          Search Somali universities, compare departments, and discover scholarships—optimized for students on any
+          connection.
+        </p>
+        <div class="search-box">
+          <input
+            id="search-input"
+            type="search"
+            placeholder="Search universities, departments, or cities"
+            data-i18n-placeholder="search.placeholder"
+            autocomplete="off"
+          />
+        </div>
+        <div class="search-meta">
+          <span id="results-count" class="results-count"></span>
+          <button id="reset-filters" class="ghost-btn" data-i18n="search.reset">Reset filters</button>
+        </div>
+      </div>
+      <div class="hero-card">
+        <h3 data-i18n="hero.cardTitle">Why Somali-UniGuide?</h3>
+        <ul>
+          <li data-i18n="hero.cardPoint1">Live search + smart filters</li>
+          <li data-i18n="hero.cardPoint2">Scholarship highlights</li>
+          <li data-i18n="hero.cardPoint3">Map-based discovery</li>
+          <li data-i18n="hero.cardPoint4">Student reviews &amp; deadlines</li>
+        </ul>
+      </div>
+    </section>
+
+    <main class="main-content">
+      <div class="content-grid">
+        <aside id="filter-sidebar" class="filter-sidebar">
+          <div class="filters-header">
+            <h3 data-i18n="filters.title">Filters</h3>
+            <button id="close-filters" class="ghost-btn mobile-only" data-i18n="filters.close">Close</button>
+          </div>
+          <div class="filter-group">
+            <h4 data-i18n="filters.city">City</h4>
+            <div id="city-filters" class="filter-options"></div>
+          </div>
+          <div class="filter-group">
+            <h4 data-i18n="filters.department">Department</h4>
+            <div id="department-filters" class="filter-options"></div>
+          </div>
+          <div class="filter-group">
+            <h4 data-i18n="filters.type">Public / Private</h4>
+            <div id="type-filters" class="filter-options">
+              <label class="checkbox">
+                <input type="checkbox" value="Public" />
+                <span data-i18n="labels.public">Public</span>
+              </label>
+              <label class="checkbox">
+                <input type="checkbox" value="Private" />
+                <span data-i18n="labels.private">Private</span>
+              </label>
+            </div>
+          </div>
+          <div class="filter-group">
+            <h4 data-i18n="filters.scholarship">Scholarship</h4>
+            <label class="toggle">
+              <input type="checkbox" id="scholarship-only" />
+              <span data-i18n="filters.scholarshipOnly">Show only universities with scholarships</span>
+            </label>
+          </div>
+        </aside>
+
+        <section class="results-section">
+          <div class="section-header">
+            <h3 data-i18n="results.title">Universities</h3>
+            <p id="results-subtitle" data-i18n="results.subtitle">Browse all universities below.</p>
+          </div>
+          <div id="cards-grid" class="cards-grid"></div>
+        </section>
+      </div>
+    </main>
+
+    <section id="detail-section" class="detail-section hidden">
+      <div class="detail-card">
+        <button id="close-detail" class="close-detail" aria-label="Close">&times;</button>
+        <div class="detail-header">
+          <img id="detail-logo" alt="" />
+          <div>
+            <h3 id="detail-name"></h3>
+            <p id="detail-city"></p>
+            <span id="detail-type" class="pill"></span>
+          </div>
+        </div>
+        <div class="detail-body">
+          <div class="detail-block">
+            <h4 data-i18n="detail.overview">Overview</h4>
+            <p id="detail-description"></p>
+          </div>
+          <div class="detail-block">
+            <h4 data-i18n="detail.departments">Departments</h4>
+            <ul id="detail-departments" class="detail-list"></ul>
+          </div>
+          <div class="detail-block">
+            <h4 data-i18n="detail.tuition">Tuition</h4>
+            <p id="detail-tuition"></p>
+          </div>
+          <div class="detail-block">
+            <h4 data-i18n="detail.scholarships">Scholarships</h4>
+            <p id="detail-scholarships"></p>
+          </div>
+          <div class="detail-block">
+            <h4 data-i18n="detail.admission">Admission requirements</h4>
+            <ul id="detail-admission" class="detail-list"></ul>
+          </div>
+          <div class="detail-block">
+            <h4 data-i18n="detail.contact">Contact</h4>
+            <p id="detail-contact"></p>
+            <a id="detail-website" class="link" target="_blank" rel="noopener">Website</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="map-section">
+      <div class="section-header">
+        <h3 data-i18n="map.title">Somalia University Map</h3>
+        <p data-i18n="map.subtitle">Tap a marker to view university details.</p>
+      </div>
+      <div id="map" class="map-container"></div>
+    </section>
+
+    <section class="recommend-section">
+      <div class="section-header">
+        <h3 data-i18n="recommend.title">Smart Recommendations</h3>
+        <p data-i18n="recommend.subtitle">Match your interests to the best-fit universities.</p>
+      </div>
+      <div class="recommend-grid">
+        <div class="recommend-form">
+          <label for="recommend-interest" data-i18n="recommend.interest">Interest</label>
+          <select id="recommend-interest"></select>
+          <label for="recommend-scholarship" data-i18n="recommend.scholarshipNeed">Need scholarship?</label>
+          <select id="recommend-scholarship"></select>
+          <label for="recommend-city" data-i18n="recommend.city">City</label>
+          <select id="recommend-city"></select>
+        </div>
+        <div id="recommend-cards" class="cards-grid small"></div>
+      </div>
+    </section>
+
+    <section class="reviews-section">
+      <div class="section-header">
+        <h3 data-i18n="reviews.title">Student Reviews</h3>
+        <p data-i18n="reviews.subtitle">See what students are saying.</p>
+      </div>
+      <div class="reviews-grid">
+        <div id="reviews-list" class="reviews-list"></div>
+        <form id="review-form" class="review-form">
+          <h4 data-i18n="reviews.addTitle">Add a review</h4>
+          <input id="reviewer-name" type="text" placeholder="Your name" data-i18n-placeholder="reviews.name" required />
+          <select id="review-university" required></select>
+          <select id="review-rating" required>
+            <option value="" data-i18n="reviews.rating">Rating</option>
+            <option value="5">★★★★★ 5</option>
+            <option value="4">★★★★☆ 4</option>
+            <option value="3">★★★☆☆ 3</option>
+            <option value="2">★★☆☆☆ 2</option>
+            <option value="1">★☆☆☆☆ 1</option>
+          </select>
+          <textarea
+            id="review-comment"
+            rows="3"
+            placeholder="Share your experience"
+            data-i18n-placeholder="reviews.comment"
+            required
+          ></textarea>
+          <button type="submit" class="primary-btn" data-i18n="reviews.submit">Submit review</button>
+          <p class="form-note" data-i18n="reviews.localNote">Reviews are saved locally in your browser.</p>
+        </form>
+      </div>
+    </section>
+
+    <section class="deadlines-section">
+      <div class="section-header">
+        <h3 data-i18n="deadlines.title">Admission Deadlines</h3>
+        <p data-i18n="deadlines.subtitle">Track opening dates and upcoming deadlines.</p>
+      </div>
+      <div id="deadlines-list" class="deadlines-list"></div>
+    </section>
+
+    <footer class="site-footer">
+      <div>
+        <p data-i18n="footer.tagline">Built for Somali students. Hosted free on GitHub Pages.</p>
+        <p class="meta" id="last-updated"></p>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/Mohamed-Qadar/Somali-UniGuide" target="_blank" rel="noopener">GitHub</a>
+        <a href="#" id="back-to-top" data-i18n="footer.backToTop">Back to top</a>
+      </div>
+    </footer>
+
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+    <script src="app.js"></script>
+  </body>
+</html>

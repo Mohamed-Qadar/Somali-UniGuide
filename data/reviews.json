@@ -1,0 +1,23 @@
+[
+  {
+    "name": "Asha Ali",
+    "universityId": "uom",
+    "rating": 5,
+    "comment": "The ICT labs are improving every year and the lecturers are supportive.",
+    "date": "2025-11-12"
+  },
+  {
+    "name": "Mohamed Noor",
+    "universityId": "psu",
+    "rating": 4,
+    "comment": "Strong engineering focus and helpful career guidance services.",
+    "date": "2025-10-05"
+  },
+  {
+    "name": "Hodan Ismail",
+    "universityId": "uoh",
+    "rating": 4,
+    "comment": "Good public university with affordable tuition and active student clubs.",
+    "date": "2025-09-18"
+  }
+]

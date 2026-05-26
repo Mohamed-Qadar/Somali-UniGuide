@@ -33,6 +33,14 @@ body {
   padding: 2.5rem 0 2rem;
 }
 
+.header-top,
+.detail-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
 .brand h1 {
   margin: 0 0 0.4rem;
   font-size: 2.4rem;
@@ -41,6 +49,34 @@ body {
 .brand p {
   margin: 0;
   color: rgba(255, 255, 255, 0.85);
+}
+
+.developer-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  text-decoration: none;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.12);
+  padding: 0.55rem 0.85rem;
+  border-radius: 999px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.developer-button:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.24);
+  border-color: rgba(255, 255, 255, 0.65);
+}
+
+.developer-button svg {
+  width: 1rem;
+  height: 1rem;
+  fill: currentColor;
+  flex-shrink: 0;
 }
 
 .search-panel {
@@ -223,6 +259,16 @@ select {
 }
 
 @media (max-width: 720px) {
+  .header-top,
+  .detail-top {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .developer-button {
+    max-width: 100%;
+  }
+
   .search-panel {
     margin-top: 1.5rem;
   }

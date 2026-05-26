@@ -43,6 +43,7 @@ Somali-UniGuide/
 - `city` (string)
 - `status` (public/private)
 - `description` (string)
+- `rector` (string)
 - `departments` (array of strings)
 - `tuition` (string)
 - `scholarships` (object with `available` and `details`)
@@ -63,7 +64,12 @@ The GitHub Actions workflow in `.github/workflows/update_data.yml` runs monthly:
 4. Commits the changes back to the repository only when files changed
 5. Triggers GitHub Pages redeploy from the default branch
 
-To add real data sources, update `data/sources.json` with JSON endpoints that return an array of universities or a `{ "universities": [...] }` payload using the same schema.
+To add real data sources, update `data/sources.json` with either:
+
+- JSON endpoints that return an array of universities or a `{ "universities": [...] }` payload
+- HTML list/table pages (`type: "html"` or `type: "wikipedia_html"`) where the scraper can infer names and rector keywords
+
+If remote sources fail, the scraper also applies curated and Wikipedia-based fallback discovery for Somali universities.
 
 ## Local Preview
 

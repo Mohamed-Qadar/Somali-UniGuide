@@ -257,6 +257,7 @@ const renderDetail = (universities) => {
     createTextNode((university.departments || []).join(", ") || "Not listed")
   );
   addInfoItem("Tuition", createTextNode(university.tuition));
+  addInfoItem("Rector", createTextNode(university.rector));
 
   const scholarshipText = university.scholarships?.available
     ? "Available"

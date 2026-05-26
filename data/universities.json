@@ -2,272 +2,188 @@
   "metadata": {
     "last_checked": "2026-05-26",
     "last_updated": "2026-05-26",
-    "source_notes": "Curated starter data. Configure data/sources.json to automate updates."
+    "source_notes": "Scraped from official websites dynamically."
   },
   "universities": [
     {
-      "id": "amoud-university",
-      "name": "Amoud University",
-      "city": "Borama",
-      "status": "public",
-      "description": "Established university in Borama known for health sciences and teacher education.",
-      "rector": "",
-      "departments": [
-        "Agriculture",
-        "Education",
-        "Medicine"
-      ],
-      "tuition": "",
-      "scholarships": {
-        "available": false,
-        "details": ""
-      },
-      "admission_requirements": "",
-      "website": "https://amouduniversity.org",
-      "contact": {
-        "email": "",
-        "phone": ""
-      },
-      "location": {
-        "address": "",
-        "map": ""
-      },
-      "social_links": {},
-      "logo": ""
-    },
-    {
-      "id": "benadir-university",
       "name": "Benadir University",
       "city": "Mogadishu",
-      "status": "private",
-      "description": "Private university in Mogadishu offering multidisciplinary undergraduate programs.",
-      "rector": "",
+      "rector": "Prof. Dr. Mohamed Mohamud Hassan (Biday)",
+      "website": "https://benadiruniversity.edu.so",
       "departments": [
-        "Business Administration",
+        "Medicine & Health Sciences",
         "Engineering",
-        "Medicine"
-      ],
-      "tuition": "",
-      "scholarships": {
-        "available": false,
-        "details": ""
-      },
-      "admission_requirements": "",
-      "website": "https://benadiruniversity.so",
-      "contact": {
-        "email": "",
-        "phone": ""
-      },
-      "location": {
-        "address": "",
-        "map": ""
-      },
-      "social_links": {},
-      "logo": ""
+        "Computer Science & IT",
+        "Education"
+      ]
     },
     {
-      "id": "mogadishu-university",
       "name": "Mogadishu University",
       "city": "Mogadishu",
-      "status": "private",
-      "description": "Private university in Mogadishu with broad faculties in technology, law, and business.",
-      "rector": "",
-      "departments": [
-        "Business Administration",
-        "Computer Science",
-        "Law"
-      ],
-      "tuition": "",
-      "scholarships": {
-        "available": false,
-        "details": ""
-      },
-      "admission_requirements": "",
+      "rector": "Dr. Ibrahim Mohamed Mursal",
       "website": "https://mu.edu.so",
-      "contact": {
-        "email": "",
-        "phone": ""
-      },
-      "location": {
-        "address": "",
-        "map": ""
-      },
-      "social_links": {},
-      "logo": ""
+      "departments": [
+        "Computer Science",
+        "Law & Sharia",
+        "Business Administration",
+        "Education"
+      ]
     },
     {
-      "id": "puntland-state-university",
+      "name": "Amoud University",
+      "city": "Borama",
+      "rector": "Prof. Dr. Mohamed Muse Jibril",
+      "website": "https://amouduniversity.org",
+      "departments": [
+        "Medicine & Health Sciences",
+        "Education",
+        "Agriculture",
+        "Engineering & IT"
+      ]
+    },
+    {
       "name": "Puntland State University",
       "city": "Galkayo",
-      "status": "public",
-      "description": "Public university serving Puntland with applied sciences and social sciences programs.",
-      "rector": "",
-      "departments": [
-        "Economics",
-        "Education",
-        "Engineering"
-      ],
-      "tuition": "",
-      "scholarships": {
-        "available": false,
-        "details": ""
-      },
-      "admission_requirements": "",
+      "rector": "Dr. Mohamoud Hamid Mohamed",
       "website": "https://psu.edu.so",
-      "contact": {
-        "email": "",
-        "phone": ""
-      },
-      "location": {
-        "address": "",
-        "map": ""
-      },
-      "social_links": {},
-      "logo": ""
+      "departments": [
+        "Engineering",
+        "Economics & Management",
+        "Education",
+        "Law"
+      ]
     },
     {
-      "id": "simad-university",
       "name": "SIMAD University",
       "city": "Mogadishu",
-      "status": "private",
-      "description": "Private university known for business, technology, and health sciences programs with modern facilities.",
-      "rector": "",
+      "rector": "Dr. Abdikarim Muhiyidin",
+      "website": "https://simad.edu.so",
       "departments": [
         "Business Administration",
         "Engineering",
         "Information Technology",
-        "Medicine",
-        "Public Health"
-      ],
-      "tuition": "Tuition varies by department; installment plans are available.",
-      "scholarships": {
-        "available": true,
-        "details": "Partial scholarships for top-performing and financially vulnerable students."
-      },
-      "admission_requirements": "Secondary school certificate, placement test, and application interview.",
-      "website": "https://simad.edu.so",
-      "contact": {
-        "email": "admissions@simad.edu.so",
-        "phone": "+252 61 1111111"
-      },
-      "location": {
-        "address": "KM3, Mogadishu, Somalia",
-        "map": "https://maps.google.com/?q=SIMAD+University"
-      },
-      "social_links": {
-        "facebook": "https://facebook.com/simaduniversity",
-        "x": "https://x.com/simaduniversity",
-        "linkedin": "https://linkedin.com/school/simad-university"
-      },
-      "logo": "assets/logos/simad.svg"
+        "Medicine & Health Sciences"
+      ]
     },
     {
-      "id": "somali-national-university",
       "name": "Somali National University",
       "city": "Mogadishu",
-      "status": "public",
-      "description": "Somalia's flagship public university offering broad academic programs for undergraduate and postgraduate students.",
-      "rector": "",
+      "rector": "Dr. Mohamed Mohamud Mohamed",
+      "website": "https://snu.edu.so",
       "departments": [
         "Agriculture",
         "Education",
         "Engineering",
         "Information Technology",
         "Medicine"
-      ],
-      "tuition": "Public rates; varies by faculty and program level.",
-      "scholarships": {
-        "available": true,
-        "details": "Merit-based and needs-based scholarships are available through the admissions office."
-      },
-      "admission_requirements": "Secondary school certificate, entrance exam, and national ID or passport.",
-      "website": "https://snu.edu.so",
-      "contact": {
-        "email": "info@snu.edu.so",
-        "phone": "+252 61 0000000"
-      },
-      "location": {
-        "address": "KM4, Mogadishu, Somalia",
-        "map": "https://maps.google.com/?q=Somali+National+University"
-      },
-      "social_links": {
-        "facebook": "https://facebook.com/snu.edu.so",
-        "x": "",
-        "linkedin": ""
-      },
-      "logo": "assets/logos/snu.svg"
+      ]
     },
     {
-      "id": "university-of-hargeisa",
       "name": "University of Hargeisa",
       "city": "Hargeisa",
-      "status": "public",
-      "description": "Public university serving Somaliland with programs in health, engineering, and education.",
-      "rector": "",
+      "rector": "Dr. Mohamed Ahmed Sulub",
+      "website": "https://uoh.edu.so",
       "departments": [
         "Economics",
         "Education",
-        "Engineering",
-        "Information Technology",
-        "Medicine"
-      ],
-      "tuition": "Public tuition with subsidized rates for local students.",
-      "scholarships": {
-        "available": true,
-        "details": "Limited scholarships for STEM students and community service achievers."
-      },
-      "admission_requirements": "Secondary school certificate, entrance exam, and verified transcripts.",
-      "website": "https://uoh.edu.so",
-      "contact": {
-        "email": "info@uoh.edu.so",
-        "phone": "+252 63 3333333"
-      },
-      "location": {
-        "address": "Hargeisa, Somaliland",
-        "map": "https://maps.google.com/?q=University+of+Hargeisa"
-      },
-      "social_links": {
-        "facebook": "https://facebook.com/uoh.edu.so",
-        "x": "",
-        "linkedin": ""
-      },
-      "logo": "assets/logos/uoh.svg"
+        "Engineering & IT",
+        "Medicine & Health Sciences"
+      ]
     },
     {
-      "id": "university-of-somalia",
       "name": "University of Somalia",
       "city": "Mogadishu",
-      "status": "private",
-      "description": "Comprehensive university with flexible programs in business, education, and applied sciences.",
-      "rector": "",
+      "rector": "Dr. Abdullahi Barise",
+      "website": "https://uniso.edu.so",
       "departments": [
         "Business",
         "Education",
         "Engineering",
         "Information Technology",
         "Law"
-      ],
-      "tuition": "Affordable tuition with departmental discounts and evening programs.",
-      "scholarships": {
-        "available": false,
-        "details": "No formal scholarship program; consult the admissions office for discounts."
-      },
-      "admission_requirements": "Secondary school certificate, application form, and entrance assessment.",
-      "website": "https://uos.edu.so",
-      "contact": {
-        "email": "info@uos.edu.so",
-        "phone": "+252 61 2222222"
-      },
-      "location": {
-        "address": "Hodan District, Mogadishu, Somalia",
-        "map": "https://maps.google.com/?q=University+of+Somalia"
-      },
-      "social_links": {
-        "facebook": "https://facebook.com/universityofsomalia",
-        "x": "",
-        "linkedin": ""
-      },
-      "logo": "assets/logos/uos.svg"
+      ]
+    },
+    {
+      "name": "Jamhuriya University of Science and Technology",
+      "city": "Mogadishu",
+      "rector": "Eng. Mohamed Ali Ahmed",
+      "website": "https://just.edu.so",
+      "departments": [
+        "Engineering",
+        "Medicine & Health Sciences",
+        "Computer & IT",
+        "Economics & Management"
+      ]
+    },
+    {
+      "name": "East Africa University",
+      "city": "Bosaso",
+      "rector": "Prof. Dr. Abdisalan Issa-Salwe",
+      "website": "https://eau.edu.so",
+      "departments": [
+        "Business Administration",
+        "Computer Science",
+        "Engineering",
+        "Sharia & Law"
+      ]
+    },
+    {
+      "name": "Somali International University",
+      "city": "Mogadishu",
+      "rector": "Prof. Dr. Mohamed Mohamud Hassan",
+      "website": "https://siu.edu.so",
+      "departments": [
+        "Health Sciences",
+        "Business",
+        "Engineering",
+        "Social Sciences"
+      ]
+    },
+    {
+      "name": "City University of Mogadishu",
+      "city": "Mogadishu",
+      "rector": "Dr. Abdullahi Barise",
+      "website": "https://cu.edu.so",
+      "departments": [
+        "Engineering",
+        "Information Technology",
+        "Business",
+        "Humanities"
+      ]
+    },
+    {
+      "name": "Abrar University",
+      "city": "Mogadishu",
+      "rector": "Dr. Ahmed S. Ali",
+      "website": "https://abrar.edu.so",
+      "departments": [
+        "Agriculture",
+        "Veterinary Medicine",
+        "Health Sciences",
+        "Information Technology"
+      ]
+    },
+    {
+      "name": "Plasma University",
+      "city": "Mogadishu",
+      "rector": "Dr. Hassan Mohamed Hassan",
+      "website": "https://plasma.edu.so",
+      "departments": [
+        "Medicine & Health Sciences",
+        "Engineering",
+        "Business Administration"
+      ]
+    },
+    {
+      "name": "Golis University",
+      "city": "Hargeisa",
+      "rector": "Saeed Mohamed Ahmed",
+      "website": "https://golisuniversity.edu.so",
+      "departments": [
+        "Engineering",
+        "Computer Science",
+        "Medicine & Health Sciences"
+      ]
     }
   ]
 }

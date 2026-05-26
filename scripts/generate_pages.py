@@ -33,57 +33,16 @@ def build_link(url: str, label: str) -> str:
     return f'<a href="{safe_url}" target="_blank" rel="noopener noreferrer">{safe_label}</a>'
 
 
-def to_detail_relative_path(path: str) -> str:
-    if not path:
-        return ""
-    path = path.strip()
-    if re.match(r"^(?:[a-z]+:|//)", path, re.IGNORECASE):
-        return path
-    return f"../{path.lstrip('./')}"
-
-
-def render_social_links(social_links: Dict[str, Any]) -> str:
-    items = []
-    for platform, url in sorted((social_links or {}).items()):
-        if not url:
-            continue
-        items.append(
-            f"<li>{build_link(str(url), platform.replace('_', ' ').title())}</li>"
-        )
-
-    if not items:
-        return "<li>No social links listed.</li>"
-    return "".join(items)
-
-
 def render_university_page(university: Dict[str, Any]) -> str:
     name = clean_text(university.get("name"), "Unknown University")
     city = clean_text(university.get("city"))
-    status_raw = str(university.get("status") or "").strip().lower()
-    status = "Public" if status_raw == "public" else "Private"
-    description = clean_text(university.get("description"))
-    tuition = clean_text(university.get("tuition"))
     rector = clean_text(university.get("rector"))
-    admission = clean_text(university.get("admission_requirements"))
     website = str(university.get("website") or "").strip()
-    logo = to_detail_relative_path(str(university.get("logo") or "").strip())
-
-    contact = university.get("contact") or {}
-    location = university.get("location") or {}
-    scholarships = university.get("scholarships") or {}
     departments = university.get("departments") or []
 
     department_items = "".join(
         f"<li>{clean_text(department)}</li>" for department in departments if department
     ) or "<li>Not listed</li>"
-    scholarship_status = "Available" if scholarships.get("available") else "Not available"
-    scholarship_details = clean_text(scholarships.get("details"))
-
-    logo_html = (
-        f'<img class="logo" src="{escape(logo, quote=True)}" alt="{name} logo" loading="lazy" />'
-        if logo
-        else "<div class=\"logo-placeholder\">No logo</div>"
-    )
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -148,23 +107,6 @@ def render_university_page(university: Dict[str, Any]) -> str:
         margin-bottom: 0.75rem;
         font-size: 1.1rem;
       }}
-      .logo-wrap {{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 160px;
-        background: #fff;
-      }}
-      .logo {{
-        max-width: 160px;
-        max-height: 160px;
-        width: 100%;
-        height: auto;
-        object-fit: contain;
-      }}
-      .logo-placeholder {{
-        color: var(--muted);
-      }}
       ul {{
         margin: 0;
         padding-left: 1.2rem;
@@ -182,42 +124,19 @@ def render_university_page(university: Dict[str, Any]) -> str:
       <div class="container">
         <a class="back-link" href="../index.html">← Back to home</a>
         <h1 class="title">{name}</h1>
-        <p class="subtitle">{city} · {escape(status)}</p>
+        <p class="subtitle">{city}</p>
       </div>
     </header>
     <main class="container">
       <div class="grid">
         <section class="card">
           <h2>Overview</h2>
-          <p>{description}</p>
-          <p class="muted"><strong>Status:</strong> {escape(status)}</p>
           <p class="muted"><strong>Rector:</strong> {rector}</p>
-          <p class="muted"><strong>Tuition:</strong> {tuition}</p>
           <p class="muted"><strong>Website:</strong> {build_link(website, website or "Not listed")}</p>
-        </section>
-        <section class="card logo-wrap">
-          {logo_html}
         </section>
         <section class="card">
           <h2>Departments</h2>
           <ul>{department_items}</ul>
-        </section>
-        <section class="card">
-          <h2>Admission</h2>
-          <p>{admission}</p>
-          <p class="muted"><strong>Scholarships:</strong> {escape(scholarship_status)}</p>
-          <p class="muted">{scholarship_details}</p>
-        </section>
-        <section class="card">
-          <h2>Contact & Location</h2>
-          <p><strong>Email:</strong> {clean_text(contact.get("email"))}</p>
-          <p><strong>Phone:</strong> {clean_text(contact.get("phone"))}</p>
-          <p><strong>Address:</strong> {clean_text(location.get("address"))}</p>
-          <p><strong>Map:</strong> {build_link(str(location.get("map") or ""), "Open map")}</p>
-        </section>
-        <section class="card">
-          <h2>Social Media</h2>
-          <ul>{render_social_links(university.get("social_links") or {})}</ul>
         </section>
       </div>
     </main>

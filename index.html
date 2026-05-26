@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Somali-UniGuide</title>
     <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
   <body data-page="index">
     <header class="site-header">
@@ -46,22 +47,7 @@
               Department
               <select id="departmentFilter" aria-label="Filter by department"></select>
             </label>
-            <label>
-              Scholarships
-              <select id="scholarshipFilter" aria-label="Filter by scholarship availability">
-                <option value="all">All</option>
-                <option value="available">Available</option>
-                <option value="unavailable">Not available</option>
-              </select>
-            </label>
-            <label>
-              Status
-              <select id="statusFilter" aria-label="Filter by university status">
-                <option value="all">All</option>
-                <option value="public">Public</option>
-                <option value="private">Private</option>
-              </select>
-            </label>
+
           </div>
         </div>
       </div>
@@ -73,6 +59,23 @@
       </section>
       <section>
         <div id="universityList" class="university-grid"></div>
+      </section>
+      <section class="dashboard-section">
+        <h2>University Statistics</h2>
+        <div class="charts-grid">
+          <div class="chart-card">
+            <h3>Universities by City</h3>
+            <div class="chart-canvas-wrapper">
+              <canvas id="cityChart"></canvas>
+            </div>
+          </div>
+          <div class="chart-card">
+            <h3>Departments Count</h3>
+            <div class="chart-canvas-wrapper">
+              <canvas id="departmentChart"></canvas>
+            </div>
+          </div>
+        </div>
       </section>
     </main>
 

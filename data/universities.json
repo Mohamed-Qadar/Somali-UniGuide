@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "last_checked": "2026-05-26",
-    "last_updated": "2026-05-26",
+    "last_checked": "2026-06-01",
+    "last_updated": "2026-06-01",
     "source_notes": "Scraped from official websites dynamically."
   },
   "universities": [
@@ -20,7 +20,7 @@
     {
       "name": "Mogadishu University",
       "city": "Mogadishu",
-      "rector": "Dr. Ibrahim Mohamed Mursal",
+      "rector": "Our Story Vision",
       "website": "https://mu.edu.so",
       "departments": [
         "Computer Science",

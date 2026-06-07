@@ -1,3 +1,4 @@
+ https://mohamed-qadar.github.io/Somali-UniGuide/
 # Somali-UniGuide
 
 Somali-UniGuide is a free, open-source university guidance platform for Somali students. It runs entirely on GitHub Pages and updates automatically with GitHub Actions and a Python data scraper.

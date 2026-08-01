@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "last_checked": "2026-07-01",
-    "last_updated": "2026-06-01",
+    "last_checked": "2026-08-01",
+    "last_updated": "2026-08-01",
     "source_notes": "Scraped from official websites dynamically."
   },
   "universities": [
@@ -68,7 +68,7 @@
     {
       "name": "Somali National University",
       "city": "Mogadishu",
-      "rector": "Dr. Mohamed Mohamud Mohamed",
+      "rector": "Rector's Message Welcome Message Welcome",
       "website": "https://snu.edu.so",
       "departments": [
         "Agriculture",
